@@ -1,0 +1,13 @@
+.git
+.github
+.idea
+.tools/bin
+.tools/venv
+.tools/npm
+.coverage
+dist
+leontp-metrics
+api-defs
+*.md
+docker-compose.yml
+.env*

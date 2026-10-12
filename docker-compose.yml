@@ -1,0 +1,35 @@
+# Default always-on deployment: runs the released image from ghcr.io and serves the metrics page
+# for a Grafana Alloy, or a Prometheus, on the same host to scrape.
+# To run a local build instead: make docker, then set image: leontp-metrics (or add build: .).
+# The image's own healthcheck asks /healthz on the default port; add a healthcheck here if
+# LEONTP_METRICS_LISTEN names another.
+
+networks:
+  net:
+    name: net
+
+services:
+  leontp-metrics:
+    image: ghcr.io/katbyte/leontp-metrics:latest
+    container_name: leontp-metrics
+    hostname: leontp-metrics
+    restart: always
+    networks:
+      net:
+    # only the host itself can reach the page: whatever scrapes it runs there. Drop the address
+    # to let the rest of the network in, since the page needs no password
+    ports:
+      - "127.0.0.1:9123:9123"
+    environment:
+      - "TZ=America/Vancouver"
+      - "LEONTP_METRICS_SERVER=10.0.0.10"
+      - "LEONTP_METRICS_LISTEN=:9123"
+      - "LEONTP_METRICS_LOG=INFO"
+      # labels put on every reading, for a store that tells one source from another by them
+      - "LEONTP_METRICS_LABELS=hostname=ntp"
+      # - "LEONTP_METRICS_TIMEOUT=1s"           # how long to wait for the time server to answer before asking once more
+      # - "LEONTP_METRICS_SHORT_QUESTION=true"  # for the older LeoNTP, which the maker's script asks in 8 bytes
+    logging:
+      options:
+        max-size: 100m
+        max-file: "1"

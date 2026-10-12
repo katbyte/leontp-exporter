@@ -1,0 +1,44 @@
+# HELP leontp_clock_offset_seconds The time server's clock less the clock of the machine running leontp-metrics, with the network delay taken out.
+# TYPE leontp_clock_offset_seconds gauge
+leontp_clock_offset_seconds 0.087320658
+# HELP leontp_control_requests_total ntpq questions the time server has answered since it was powered on; a 1200 answers none.
+# TYPE leontp_control_requests_total counter
+leontp_control_requests_total 0
+# HELP leontp_device_info Always 1, with the unit's serial number and firmware version.
+# TYPE leontp_device_info gauge
+leontp_device_info{firmware="2.07",serial="416"} 1
+# HELP leontp_gps_lock_seconds How long the GPS has been locked; it starts again from 0 each time the fix is lost and found.
+# TYPE leontp_gps_lock_seconds gauge
+leontp_gps_lock_seconds 31992
+# HELP leontp_gps_satellites Satellites the GPS receiver is using.
+# TYPE leontp_gps_satellites gauge
+leontp_gps_satellites 7
+# HELP leontp_leap_indicator The leap second warning given to NTP clients: 0 none, 1 a second to be added, 2 one to be dropped, 3 clock not set.
+# TYPE leontp_leap_indicator gauge
+leontp_leap_indicator 0
+# HELP leontp_metrics_build_info Always 1, with the version of the tool that wrote the page.
+# TYPE leontp_metrics_build_info gauge
+# HELP leontp_ntp_requests_total NTP requests the time server has answered since it was powered on.
+# TYPE leontp_ntp_requests_total counter
+leontp_ntp_requests_total 156813
+# HELP leontp_precision_seconds How fine the time server says its clock is.
+# TYPE leontp_precision_seconds gauge
+leontp_precision_seconds 2.9802322387695312e-08
+# HELP leontp_reference_timestamp_seconds When the time server says its clock was last set, in seconds since 1970.
+# TYPE leontp_reference_timestamp_seconds gauge
+leontp_reference_timestamp_seconds 1.791789057e+09
+# HELP leontp_round_trip_seconds How long an NTP question and its answer spent on the network.
+# TYPE leontp_round_trip_seconds gauge
+leontp_round_trip_seconds 0.013565941
+# HELP leontp_status_flags A status byte the maker does not document, as a number: 1 on a healthy, locked unit.
+# TYPE leontp_status_flags gauge
+leontp_status_flags 1
+# HELP leontp_stratum The stratum the time server gives NTP clients: 1 while it has a GPS fix or is holding over from one.
+# TYPE leontp_stratum gauge
+leontp_stratum 1
+# HELP leontp_up Whether the time server answered both questions the last time it was asked (1) or not (0).
+# TYPE leontp_up gauge
+leontp_up 1
+# HELP leontp_uptime_seconds How long the time server has been powered on.
+# TYPE leontp_uptime_seconds gauge
+leontp_uptime_seconds 851353

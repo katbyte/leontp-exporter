@@ -1,0 +1,14 @@
+.claude/
+.DS_Store
+.idea/
+dist/
+/leontp-metrics
+.tools/bin/
+.tools/venv/
+.tools/npm/
+__pycache__/
+.env
+.leontp-metrics
+.coverage/
+# the maker's own stats scripts, which carry no licence: downloaded to read beside api-defs/README.md, never committed
+/api-defs/*.py
