@@ -2,8 +2,6 @@
 
 ## Unreleased
 
-Not released yet: it is built against a go-kt package, `metrics/page`, that no go-kt release has.
-
 ### Added
 
 - `serve`: asks a LeoNTP time server how it is doing each time the page is read and serves the answers at `/metrics` in the Prometheus text format, with a health probe at `/healthz`. It only ever asks, over the NTP port

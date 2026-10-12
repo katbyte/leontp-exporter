@@ -1,6 +1,6 @@
-// Package page is a tool's Prometheus metrics page: its own readings and nothing else, with the labels whoever runs it wants on every one, written as
+// Package pmetrics is a tool's Prometheus metrics page: its own readings and nothing else, with the labels whoever runs it wants on every one, written as
 // text or served over HTTP beside a health probe.
-package page
+package pmetrics
 
 import (
 	"fmt"

@@ -8,7 +8,7 @@
 ![lint](https://github.com/katbyte/leontp-metrics/actions/workflows/pr-golangci-lint.yaml/badge.svg)
 [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/katbyte/leontp-metrics/badges/coverage.json)](https://github.com/katbyte/leontp-metrics/actions/workflows/coverage.yaml)
 
-> **Not released yet.** It is built against a [go-kt](https://github.com/katbyte/go-kt) package that no go-kt release has, so `go install` and the image below do not work until both are released.
+> **Not released yet.** The image and the Homebrew formula below do not exist until the first release is tagged.
 
 One small program that asks a [LeoNTP](https://www.leontp.com/1200/manuals/) GPS time server how it is doing and reports the answers as a [Prometheus](https://prometheus.io) metrics page: how long it has been up and locked to GPS, how many satellites it is using, how many requests it has answered, and the stratum and leap warning it gives its clients.
 

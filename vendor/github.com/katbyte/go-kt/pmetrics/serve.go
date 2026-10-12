@@ -1,4 +1,4 @@
-package page
+package pmetrics
 
 import (
 	"context"
@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	// MetricsPath is where the page is served.
-	MetricsPath = "/metrics"
+	// Path is where the page is served.
+	Path = "/metrics"
 	// HealthPath answers "ok" while the tool is serving, whatever state the thing it reports on is in: a container is not unhealthy because what it
 	// watches is down.
 	HealthPath = "/healthz"
@@ -30,19 +30,19 @@ type scrapeErrors struct{}
 
 func (scrapeErrors) Println(v ...any) { clog.Log.Error(v...) }
 
-// Handler is the routes: the page at MetricsPath, the health probe at HealthPath, and at the root a few lines saying where they are. Apart from
+// Handler is the routes: the page at Path, the health probe at HealthPath, and at the root a few lines saying where they are. Apart from
 // Serve so they can be tested or mounted elsewhere without a port.
 func (p *Page) Handler() http.Handler {
 	mux := http.NewServeMux()
 	// a reading that cannot be written is left out and logged; the rest of the page is still served
-	mux.Handle("GET "+MetricsPath, promhttp.HandlerFor(p.registry, promhttp.HandlerOpts{ErrorLog: scrapeErrors{}, ErrorHandling: promhttp.ContinueOnError}))
+	mux.Handle("GET "+Path, promhttp.HandlerFor(p.registry, promhttp.HandlerOpts{ErrorLog: scrapeErrors{}, ErrorHandling: promhttp.ContinueOnError}))
 	mux.HandleFunc("GET "+HealthPath, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("ok\n"))
 	})
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		_, _ = fmt.Fprintf(w, "%s %s\n%s\n%s\n", p.name, version.Version, MetricsPath, HealthPath)
+		_, _ = fmt.Fprintf(w, "%s %s\n%s\n%s\n", p.name, version.Version, Path, HealthPath)
 	})
 
 	return mux
@@ -56,7 +56,7 @@ func Serve(ctx context.Context, listen string, h http.Handler) error {
 	}
 
 	srv := &http.Server{Handler: h, ReadHeaderTimeout: readHeaderTimeout}
-	clog.Log.Infof("serving the metrics page on %s%s", ln.Addr(), MetricsPath)
+	clog.Log.Infof("serving the metrics page on %s%s", ln.Addr(), Path)
 
 	failed := make(chan error, 1)
 	go func() { failed <- srv.Serve(ln) }()

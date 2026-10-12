@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/go-kt/metrics/page"
+	"github.com/katbyte/go-kt/pmetrics"
 	"github.com/katbyte/go-kt/pointer"
 	"github.com/katbyte/leontp-metrics/lib/readings"
 	"github.com/katbyte/leontp-metrics/sdk/leontp"
@@ -53,9 +53,9 @@ func (statsOnly) Clock(context.Context) (leontp.Clock, error) {
 func whole(t *testing.T, r *readings.Readings, labels map[string]string) string {
 	t.Helper()
 
-	p, err := page.New(page.Options{Name: "leontp-metrics", Namespace: readings.Namespace, Labels: labels}, r)
+	p, err := pmetrics.New(pmetrics.Options{Name: "leontp-metrics", Namespace: readings.Namespace, Labels: labels}, r)
 	if err != nil {
-		t.Fatalf("page.New: %v", err)
+		t.Fatalf("pmetrics.New: %v", err)
 	}
 
 	var b strings.Builder
