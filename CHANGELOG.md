@@ -1,16 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.1.0 (2026-10-12)
 
-### Added
+The first release: a metrics page for a LeoNTP GPS time server, and a Go package for asking one how it is doing.
 
-- `serve`: asks a LeoNTP time server how it is doing each time the page is read and serves the answers at `/metrics` in the Prometheus text format, with a health probe at `/healthz`. It only ever asks, over the NTP port
-- `print`: asks the time server once and prints the page, as a check that the address is right and the server answers
-- the readings: whether the server answered, its serial number and firmware version, how long it has been up, NTP and `ntpq` requests answered, how long the GPS has been locked, satellites in use, the status byte the maker does not document, and from the ordinary NTP answer the stratum, leap second warning, precision, when the clock was last set, how far it is from the host's clock and how long the answer took
-- `--labels` puts labels of your choosing on every reading, `hostname=ntp,site=home` say
-- a server that does not answer is asked once more, then reported as `leontp_up` 0 with the readings it did not give left off the page
-- a LeoNTP 1200 is asked in the 48 bytes it answers; `--short-question` asks in the 8 bytes the maker's script sends, for the older unit
-- every setting is a flag, a `LEONTP_METRICS_*` environment variable, or a line in a `.leontp-metrics` file
-- `sdk/leontp`: a Go client for the two questions, with nothing beneath it but the standard library
-- `api-defs`: the statistics question and its answer laid out as the maker's own script has them, which is the only description there is, and what a 1200 does that the script does not say
-- an Alpine Docker image at `ghcr.io/katbyte/leontp-metrics`, serving on port 9123, plus `docker-compose.yml`
+- **How the time server is doing, as a page Prometheus can read**: whether it is answering, how long it has been up and locked to GPS, how many satellites it is using, how many requests it has answered, and whether it still vouches for its time.
+- **Works with a LeoNTP 1200**, which the maker's own monitoring script gets no answer from.
+- **`serve` keeps the page up** for a scraper to read, and `print` shows it once as a check that the time server can be reached.
+- **Labels of your own on every reading**, to tell one time server from another.
+- **`sdk/leontp`**: a Go package that asks a LeoNTP the same questions, for a program of your own.
+- Ships as a Docker image, a Homebrew formula and ready-built programs.
