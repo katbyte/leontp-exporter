@@ -69,6 +69,7 @@ Found by asking one on firmware 2.07.
 - **It answers only a question of exactly 48 bytes.** The script's 8 bytes get nothing back, and neither does anything built on the script. The same holds for the ordinary NTP question: one of 52 or 68 bytes, as a client sending an extension or a signature would, is not answered.
 - **A statistics question is not counted as a request.** `NTP_served` stands still while only statistics are asked for.
 - **There is no `ntpq`.** A mode 6 question is not answered and `CMD_served` stays 0.
+- **Request code 1 is the only one.** Every code from 0 to 255 answers, but only 1 returns a true reading: the unit keeps one answer and hands back whatever is in it, so another code gives the last stats when one was asked for just before, and half-written or stale bytes (a `flags` of `0xee`, a serial that is not the unit's) when the asking is quick and mixed. Nothing is gained by asking any code but 1, and the request's other fields (its sequence byte, its four unused bytes) change nothing in the answer. Walking all 256 codes left the unit's uptime climbing unbroken, so it minds none of them.
 - **`flags` is 1 on a healthy, locked unit.** What else it can be is not known.
 - **The answer's header repeats the ordinary answer's.** Bytes 2 and 3 are its poll (6) and precision (-25), bytes 12 to 15 its reference `GPS`.
 - **The ordinary answer** gives stratum 1, no leap warning, precision -25 (30 nanoseconds), root delay and root dispersion 0, the reference `GPS`, and a reference time on the whole second that moves every second.
@@ -93,7 +94,6 @@ All three send the script's 8 bytes, so none gets an answer from a 1200.
 ## Not known
 
 - what each bit of `flags` means
-- whether there is any request code but 1
 - what the older unit keeps above its firmware version
 - whether the older unit answers the 48 byte question a 1200 needs
 

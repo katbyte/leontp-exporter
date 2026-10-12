@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 (2026-10-12)
+
+The same program as 0.1.0: only what is written down about the time server has changed.
+
+- **The statistics question is the only one a 1200 has.** All 256 request codes were asked and only the one the SDK already asks gives a true reading, so the page holds everything the time server has to say about itself. Set out in [`api-defs`](api-defs/README.md).
+
 ## 0.1.0 (2026-10-12)
 
 The first release: a metrics page for a LeoNTP GPS time server, and a Go package for asking one how it is doing.
