@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/katbyte/go-kt/clog"
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -43,7 +43,7 @@ var (
 	leap      = reading("leap_indicator", "The leap second warning given to NTP clients: 0 none, 1 a second to be added, 2 one to be dropped, 3 clock not set.")
 	precision = reading("precision_seconds", "How fine the time server says its clock is.")
 	reference = reading("reference_timestamp_seconds", "When the time server says its clock was last set, in seconds since 1970.")
-	offset    = reading("clock_offset_seconds", "The time server's clock less the clock of the machine running leontp-metrics, with the network delay taken out.")
+	offset    = reading("clock_offset_seconds", "The time server's clock less the clock of the machine running leontp-exporter, with the network delay taken out.")
 	roundTrip = reading("round_trip_seconds", "How long an NTP question and its answer spent on the network.")
 )
 

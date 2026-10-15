@@ -102,5 +102,5 @@ The maker's support is the place to ask: the manual gives `orders@uputronics.com
 ## Refreshing it
 
 1. When a new firmware is out, read its line in the firmware list and download the script again; if it changed, bring the two tables above in line with it.
-2. Run `leontp-metrics print --server <address>` against a unit on the new firmware and compare with the answer above.
+2. Run `leontp-exporter print --server <address>` against a unit on the new firmware and compare with the answer above.
 3. Write what changed under "What a 1200 does", with the firmware it was seen on.

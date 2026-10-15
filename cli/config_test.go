@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/leontp-metrics/lib/readings"
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/lib/readings"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -19,7 +19,7 @@ import (
 // viper is global, so none of these can run in parallel and each resets it.
 const (
 	testServer   = "10.0.0.10"
-	settingsFile = ".leontp-metrics"
+	settingsFile = ".leontp-exporter"
 )
 
 // alone cuts a test off from the settings of whoever runs it: viper as it starts, an empty home and working directory, and none of the program's
@@ -99,11 +99,11 @@ func TestDefaults(t *testing.T) {
 func TestEveryFlagHasAnEnvironmentVariable(t *testing.T) {
 	alone(t)
 
-	t.Setenv("LEONTP_METRICS_SERVER", testServer)
-	t.Setenv("LEONTP_METRICS_LISTEN", "127.0.0.1:9000")
-	t.Setenv("LEONTP_METRICS_LABELS", "hostname=ntp,job=leontp")
-	t.Setenv("LEONTP_METRICS_TIMEOUT", "250ms")
-	t.Setenv("LEONTP_METRICS_SHORT_QUESTION", "true")
+	t.Setenv("LEONTP_EXPORTER_SERVER", testServer)
+	t.Setenv("LEONTP_EXPORTER_LISTEN", "127.0.0.1:9000")
+	t.Setenv("LEONTP_EXPORTER_LABELS", "hostname=ntp,job=leontp")
+	t.Setenv("LEONTP_EXPORTER_TIMEOUT", "250ms")
+	t.Setenv("LEONTP_EXPORTER_SHORT_QUESTION", "true")
 
 	want := FlagData{Server: testServer, Listen: "127.0.0.1:9000", Labels: "hostname=ntp,job=leontp", Timeout: 250 * time.Millisecond, ShortQuestion: true}
 	if got := *must(t); got != want {
@@ -132,8 +132,8 @@ func TestFlagThenEnvironmentThenFile(t *testing.T) {
 	}
 
 	viper.Reset()
-	t.Setenv("LEONTP_METRICS_SERVER", "from-env")
-	t.Setenv("LEONTP_METRICS_TIMEOUT", "2s")
+	t.Setenv("LEONTP_EXPORTER_SERVER", "from-env")
+	t.Setenv("LEONTP_EXPORTER_TIMEOUT", "2s")
 	f = must(t)
 	if f.Server != "from-env" || f.Timeout != 2*time.Second || f.Labels != "hostname=from-file" {
 		t.Errorf("with the environment = %+v, want it over the file, and the file for the rest", f)
@@ -146,7 +146,7 @@ func TestFlagThenEnvironmentThenFile(t *testing.T) {
 	}
 }
 
-// A .leontp-metrics in the working directory is found before the one in $HOME, and neither being there is not an error.
+// A .leontp-exporter in the working directory is found before the one in $HOME, and neither being there is not an error.
 //
 //nolint:paralleltest // viper is global state; these mutate it
 func TestSettingsFilePrecedence(t *testing.T) {
@@ -224,9 +224,9 @@ func TestReadings(t *testing.T) {
 		flags FlagData
 		want  string
 	}{
-		"no server":         {FlagData{Timeout: time.Second}, "LEONTP_METRICS_SERVER"},
-		"no time to wait":   {FlagData{Server: testServer}, "LEONTP_METRICS_TIMEOUT"},
-		"less than no time": {FlagData{Server: testServer, Timeout: -time.Second}, "LEONTP_METRICS_TIMEOUT"},
+		"no server":         {FlagData{Timeout: time.Second}, "LEONTP_EXPORTER_SERVER"},
+		"no time to wait":   {FlagData{Server: testServer}, "LEONTP_EXPORTER_TIMEOUT"},
+		"less than no time": {FlagData{Server: testServer, Timeout: -time.Second}, "LEONTP_EXPORTER_TIMEOUT"},
 		"a client not made": {FlagData{Server: "nowhere", Timeout: time.Second}, "no such host"},
 	} {
 		_, err := c.flags.readings(func(s string, _ leontp.Options) (readings.Server, error) {
@@ -251,8 +251,8 @@ func TestPage(t *testing.T) {
 		"hostname=ntp,site=home": "",
 		"hostname":               "name=value",
 		"host-name=ntp":          "host-name",
-		"serial=1":               "LEONTP_METRICS_LABELS",
-		"version=1":              "LEONTP_METRICS_LABELS",
+		"serial=1":               "LEONTP_EXPORTER_LABELS",
+		"version=1":              "LEONTP_EXPORTER_LABELS",
 	} {
 		_, err := (&FlagData{Labels: labels}).page(readings.New(still{}))
 

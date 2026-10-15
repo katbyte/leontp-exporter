@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-10-15)
+
+The same program under the name nearly every Prometheus exporter goes by: leontp-metrics is now leontp-exporter. What it reports is unchanged, but a setup made for 0.1 has to be changed to run it.
+
+- **The program, image and formula are renamed**: `leontp-exporter`, `ghcr.io/katbyte/leontp-exporter` and `brew install katbyte/tap/leontp-exporter`. The old image and formula stay as they were, at 0.1.1.
+- **Every setting is renamed with it**: `LEONTP_METRICS_SERVER` is now `LEONTP_EXPORTER_SERVER`, and the same for the rest. The settings file is now `.leontp-exporter`. The old names are no longer read.
+- **The readings keep their names.** The one saying which version wrote the page is still `leontp_metrics_build_info`, since go-kt, which writes it, names it that way.
+
 ## 0.1.1 (2026-10-12)
 
 The same program as 0.1.0: only what is written down about the time server has changed.

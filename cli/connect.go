@@ -1,8 +1,8 @@
 package cli
 
 import (
-	"github.com/katbyte/leontp-metrics/lib/readings"
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/lib/readings"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 )
 
 // connect makes the client that asks the time server its questions.

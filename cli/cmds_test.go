@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/katbyte/go-kt/pmetrics"
-	"github.com/katbyte/leontp-metrics/lib/readings"
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/lib/readings"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/spf13/cobra"
 )
 
@@ -113,7 +113,7 @@ func TestVersionCommand(t *testing.T) {
 	alone(t)
 
 	out, err := run(t, asking(&box{}), "version")
-	if err != nil || !strings.HasPrefix(out, "leontp-metrics ") {
+	if err != nil || !strings.HasPrefix(out, "leontp-exporter ") {
 		t.Errorf("version printed %q (%v), want the name and a version", out, err)
 	}
 }
@@ -125,7 +125,7 @@ func TestNoCommandPointsAtHelp(t *testing.T) {
 	alone(t)
 
 	out, err := run(t, asking(&box{}), "--server", testServer)
-	if err != nil || !strings.Contains(out, "leontp-metrics help") {
+	if err != nil || !strings.Contains(out, "leontp-exporter help") {
 		t.Errorf("no command printed %q (%v), want a pointer to help", out, err)
 	}
 }
@@ -187,12 +187,12 @@ func TestACommandNeedsAServerAndLabelsItCanUse(t *testing.T) {
 	for _, command := range []string{"print", "serve"} {
 		alone(t)
 
-		if _, err := run(t, asking(&box{}), command); err == nil || !strings.Contains(err.Error(), "LEONTP_METRICS_SERVER") {
+		if _, err := run(t, asking(&box{}), command); err == nil || !strings.Contains(err.Error(), "LEONTP_EXPORTER_SERVER") {
 			t.Errorf("%s with no server = %v, want an error naming the variable to set", command, err)
 		}
 
 		args := []string{command, "--server", testServer, "--listen", "127.0.0.1:0", "--labels", "serial=1"}
-		if _, err := run(t, asking(&box{}), args...); err == nil || !strings.Contains(err.Error(), "LEONTP_METRICS_LABELS") {
+		if _, err := run(t, asking(&box{}), args...); err == nil || !strings.Contains(err.Error(), "LEONTP_EXPORTER_LABELS") {
 			t.Errorf("%s with a label a reading already has = %v, want an error naming the variable", command, err)
 		}
 	}
@@ -257,7 +257,7 @@ func TestServe(t *testing.T) {
 		t.Errorf("%s = %q, want ok", pmetrics.HealthPath, got)
 	}
 
-	if got := fetch(t, addr, "/"); !strings.HasPrefix(got, "leontp-metrics ") {
+	if got := fetch(t, addr, "/"); !strings.HasPrefix(got, "leontp-exporter ") {
 		t.Errorf("the root = %q, want the program's name and version", got)
 	}
 

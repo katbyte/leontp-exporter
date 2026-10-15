@@ -21,8 +21,8 @@ reported as leontp_up 0 with the rest of its readings left off.
 --labels puts labels of your choosing on every reading, hostname=ntp say, for a store that
 tells one source from another by them.
 
-Every setting is also an environment variable: LEONTP_METRICS_SERVER, LEONTP_METRICS_LISTEN,
-LEONTP_METRICS_LABELS, LEONTP_METRICS_TIMEOUT and LEONTP_METRICS_SHORT_QUESTION.`,
+Every setting is also an environment variable: LEONTP_EXPORTER_SERVER, LEONTP_EXPORTER_LISTEN,
+LEONTP_EXPORTER_LABELS, LEONTP_EXPORTER_TIMEOUT and LEONTP_EXPORTER_SHORT_QUESTION.`,
 		Args:          cobra.NoArgs,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, _ []string) error {

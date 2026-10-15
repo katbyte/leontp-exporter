@@ -1,4 +1,4 @@
-// Package cli implements the leontp-metrics command line interface: the cobra commands, flag and config handling, and the server that serves the
+// Package cli implements the leontp-exporter command line interface: the cobra commands, flag and config handling, and the server that serves the
 // metrics page.
 package cli
 
@@ -17,27 +17,27 @@ func Make() (*cobra.Command, error) {
 // makeWith is Make with the time server's client made by connect, so a test can stand in for a time server.
 func makeWith(connect connector) (*cobra.Command, error) {
 	root := &cobra.Command{
-		Use:   "leontp-metrics [command]",
-		Short: "leontp-metrics reports what a LeoNTP time server says about itself as a Prometheus metrics page",
+		Use:   "leontp-exporter [command]",
+		Short: "leontp-exporter reports what a LeoNTP time server says about itself as a Prometheus metrics page",
 		Long: `Reports what a LeoNTP time server says about itself as a Prometheus metrics page: how long it
 has been up and locked to GPS, how many satellites it is using, how many requests it has
 answered, and the stratum and leap warning it gives its clients. It only ever asks the
 server questions, over its NTP port.
-Complete documentation is available at https://github.com/katbyte/leontp-metrics`,
+Complete documentation is available at https://github.com/katbyte/leontp-exporter`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "Run \"leontp-metrics help\" for more information about available leontp-metrics commands.")
+			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "Run \"leontp-exporter help\" for more information about available leontp-exporter commands.")
 			return nil
 		},
 	}
 
 	root.AddCommand(&cobra.Command{
 		Use:           "version",
-		Short:         "Print the version number of leontp-metrics",
-		Long:          `Print the version number of leontp-metrics`,
+		Short:         "Print the version number of leontp-exporter",
+		Long:          `Print the version number of leontp-exporter`,
 		Args:          cobra.NoArgs,
 		SilenceErrors: true,
 		Run: func(cmd *cobra.Command, _ []string) {
-			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "leontp-metrics "+version.Version)
+			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "leontp-exporter "+version.Version)
 		},
 	})
 

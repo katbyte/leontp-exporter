@@ -1,4 +1,4 @@
-module github.com/katbyte/leontp-metrics/tools
+module github.com/katbyte/leontp-exporter/tools
 
 go 1.27.2
 

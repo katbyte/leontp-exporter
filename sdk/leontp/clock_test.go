@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 )
 
 // The ordinary answer a real 1200 gave, with its clock a quarter of a second ahead of this machine's.

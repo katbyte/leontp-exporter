@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 )
 
 func TestNew(t *testing.T) {

@@ -6,7 +6,7 @@
 .tools/npm
 .coverage
 dist
-leontp-metrics
+leontp-exporter
 api-defs
 *.md
 docker-compose.yml

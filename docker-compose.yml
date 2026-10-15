@@ -1,18 +1,18 @@
 # Default always-on deployment: runs the released image from ghcr.io and serves the metrics page
 # for a Grafana Alloy, or a Prometheus, on the same host to scrape.
-# To run a local build instead: make docker, then set image: leontp-metrics (or add build: .).
+# To run a local build instead: make docker, then set image: leontp-exporter (or add build: .).
 # The image's own healthcheck asks /healthz on the default port; add a healthcheck here if
-# LEONTP_METRICS_LISTEN names another.
+# LEONTP_EXPORTER_LISTEN names another.
 
 networks:
   net:
     name: net
 
 services:
-  leontp-metrics:
-    image: ghcr.io/katbyte/leontp-metrics:latest
-    container_name: leontp-metrics
-    hostname: leontp-metrics
+  leontp-exporter:
+    image: ghcr.io/katbyte/leontp-exporter:latest
+    container_name: leontp-exporter
+    hostname: leontp-exporter
     restart: always
     networks:
       net:
@@ -22,13 +22,13 @@ services:
       - "127.0.0.1:9123:9123"
     environment:
       - "TZ=America/Vancouver"
-      - "LEONTP_METRICS_SERVER=10.0.0.10"
-      - "LEONTP_METRICS_LISTEN=:9123"
-      - "LEONTP_METRICS_LOG=INFO"
+      - "LEONTP_EXPORTER_SERVER=10.0.0.10"
+      - "LEONTP_EXPORTER_LISTEN=:9123"
+      - "LEONTP_EXPORTER_LOG=INFO"
       # labels put on every reading, for a store that tells one source from another by them
-      - "LEONTP_METRICS_LABELS=hostname=ntp"
-      # - "LEONTP_METRICS_TIMEOUT=1s"           # how long to wait for the time server to answer before asking once more
-      # - "LEONTP_METRICS_SHORT_QUESTION=true"  # for the older LeoNTP, which the maker's script asks in 8 bytes
+      - "LEONTP_EXPORTER_LABELS=hostname=ntp"
+      # - "LEONTP_EXPORTER_TIMEOUT=1s"           # how long to wait for the time server to answer before asking once more
+      # - "LEONTP_EXPORTER_SHORT_QUESTION=true"  # for the older LeoNTP, which the maker's script asks in 8 bytes
     logging:
       options:
         max-size: 100m

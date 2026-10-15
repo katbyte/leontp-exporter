@@ -1,5 +1,5 @@
 # build with the vendored deps, then ship the static binary on alpine: small, but keeps a shell
-# so you can `docker exec -it leontp-metrics sh` to poke at things. runs as a non-root user.
+# so you can `docker exec -it leontp-exporter sh` to poke at things. runs as a non-root user.
 # make docker passes VERSION/COMMIT from git; a bare `docker build .` reports "dev".
 #
 # REGISTRY is where the two base images come from: Google's mirror of Docker Hub, which holds
@@ -20,18 +20,18 @@ RUN CGO_ENABLED=0 go build -trimpath -mod=vendor \
       -ldflags "-s -w \
         -X github.com/katbyte/go-kt/version.Version=${VERSION} \
         -X github.com/katbyte/go-kt/version.GitCommit=${COMMIT}" \
-      -o /leontp-metrics .
+      -o /leontp-exporter .
 
 FROM ${REGISTRY}/alpine:${ALPINE_VERSION}
 RUN apk add --no-cache ca-certificates tzdata \
     && adduser -D -H -u 65532 leontp
-COPY --from=build /leontp-metrics /usr/local/bin/leontp-metrics
+COPY --from=build /leontp-exporter /usr/local/bin/leontp-exporter
 USER leontp
-# set LEONTP_METRICS_SERVER to the time server's address at runtime.
+# set LEONTP_EXPORTER_SERVER to the time server's address at runtime.
 # the healthcheck assumes the default port.
-ENV LEONTP_METRICS_LISTEN=:9123
+ENV LEONTP_EXPORTER_LISTEN=:9123
 EXPOSE 9123
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
   CMD wget -q --spider http://127.0.0.1:9123/healthz || exit 1
-ENTRYPOINT ["leontp-metrics"]
+ENTRYPOINT ["leontp-exporter"]
 CMD ["serve"]

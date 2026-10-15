@@ -10,15 +10,15 @@ import (
 
 	"github.com/katbyte/go-kt/clog"
 	"github.com/katbyte/go-kt/pmetrics"
-	"github.com/katbyte/leontp-metrics/lib/readings"
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/lib/readings"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
 // toolName is what the program is called.
-const toolName = "leontp-metrics"
+const toolName = "leontp-exporter"
 
 // defaultListen is the NTP port with a 9 in front.
 const defaultListen = ":9123"
@@ -33,11 +33,11 @@ type FlagData struct {
 
 // envNames binds each flag to its environment variable.
 var envNames = map[string]string{
-	"server":         "LEONTP_METRICS_SERVER",
-	"listen":         "LEONTP_METRICS_LISTEN",
-	"labels":         "LEONTP_METRICS_LABELS",
-	"timeout":        "LEONTP_METRICS_TIMEOUT",
-	"short-question": "LEONTP_METRICS_SHORT_QUESTION",
+	"server":         "LEONTP_EXPORTER_SERVER",
+	"listen":         "LEONTP_EXPORTER_LISTEN",
+	"labels":         "LEONTP_EXPORTER_LABELS",
+	"timeout":        "LEONTP_EXPORTER_TIMEOUT",
+	"short-question": "LEONTP_EXPORTER_SHORT_QUESTION",
 }
 
 // persistent is the flag set configureFlags bound, for the one setting that has to be read before viper is: where the settings file is.
@@ -51,7 +51,7 @@ func configureFlags(root *cobra.Command) error {
 	pflags.String("labels", "", "labels to put on every reading, written name=value,name=value, e.g. hostname=ntp,site=home")
 	pflags.Duration("timeout", leontp.DefaultTimeout, "how long to wait for the time server to answer a question before asking once more")
 	pflags.Bool("short-question", false, "ask for statistics in the 8 bytes the maker's script sends, for the older LeoNTP; a 1200 does not answer it")
-	pflags.String("config", "", "read settings from this file and no other, in place of ./.leontp-metrics or ~/.leontp-metrics (or export LEONTP_METRICS_CONFIG)")
+	pflags.String("config", "", "read settings from this file and no other, in place of ./.leontp-exporter or ~/.leontp-exporter (or export LEONTP_EXPORTER_CONFIG)")
 
 	persistent = pflags
 
@@ -69,7 +69,7 @@ func configureFlags(root *cobra.Command) error {
 }
 
 // configEnv names the settings file from the environment, as --config does on the command line.
-const configEnv = "LEONTP_METRICS_CONFIG"
+const configEnv = "LEONTP_EXPORTER_CONFIG"
 
 // configPath is the settings file a run was told to read, "" for none: the flag's, then the environment's. A leading ~/ is the home directory, for
 // whatever starts the program without a shell to expand it.
@@ -90,8 +90,8 @@ func configPath() string {
 	return path
 }
 
-// loadConfig reads the settings file, once the flags are parsed: the one --config or LEONTP_METRICS_CONFIG names and no other, or else the first
-// .leontp-metrics found in the working directory and then in $HOME. A file that was named and cannot be read is an error; one merely absent from
+// loadConfig reads the settings file, once the flags are parsed: the one --config or LEONTP_EXPORTER_CONFIG names and no other, or else the first
+// .leontp-exporter found in the working directory and then in $HOME. A file that was named and cannot be read is an error; one merely absent from
 // the usual places is not.
 func loadConfig() error {
 	viper.SetConfigType("env")

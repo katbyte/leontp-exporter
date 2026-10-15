@@ -9,7 +9,7 @@ TEST_TIMEOUT?=5m
 # dev tool binaries are built into .tools/bin (gitignored) from the versions pinned in
 # .tools/go.mod - the single source of truth for make and CI; dependabot keeps them updated.
 # overridable because binaries cannot execute from a noexec mount (e.g. an smb checkout):
-# make TOOLS_BIN=~/.cache/leontp-metrics/bin lint
+# make TOOLS_BIN=~/.cache/leontp-exporter/bin lint
 TOOLS_BIN?=.tools/bin
 ACTIONLINT=$(TOOLS_BIN)/actionlint
 GOFUMPT=$(TOOLS_BIN)/gofumpt
@@ -92,17 +92,17 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-24s\033[0m%s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) }' $(MAKEFILE_LIST)
 
 ##@ Build
-build: ## Compile leontp-metrics with version info from git
+build: ## Compile leontp-exporter with version info from git
 	@echo "==> building..."
 	go build -ldflags "-X github.com/katbyte/go-kt/version.GitCommit=${GIT_COMMIT} -X github.com/katbyte/go-kt/version.Version=${GIT_VERSION}"
 
-install: ## Install leontp-metrics into GOPATH/bin with version info from git
+install: ## Install leontp-exporter into GOPATH/bin with version info from git
 	@echo "==> installing..."
 	go install -ldflags "-X github.com/katbyte/go-kt/version.GitCommit=${GIT_COMMIT} -X github.com/katbyte/go-kt/version.Version=${GIT_VERSION}" .
 
-docker: ## Build the leontp-metrics container image with version info from git
+docker: ## Build the leontp-exporter container image with version info from git
 	@echo "==> building docker image..."
-	docker build --build-arg VERSION=${GIT_VERSION} --build-arg COMMIT=${GIT_COMMIT} -t leontp-metrics .
+	docker build --build-arg VERSION=${GIT_VERSION} --build-arg COMMIT=${GIT_COMMIT} -t leontp-exporter .
 
 tools: $(ACTIONLINT) $(GOFUMPT) $(GOLANGCI_LINT) $(GOLANGCI_LINT_MODULES) $(MARKDOWNLINT) $(SHELLCHECK) $(TYPOS) $(YAMLLINT) $(ZIZMOR) ## Install all pinned dev tools into .tools/bin
 

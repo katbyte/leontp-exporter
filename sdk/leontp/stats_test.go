@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 )
 
 // The answer a real 1200 gave is read as its front panel showed it at the time.

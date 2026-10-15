@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/leontp-metrics/sdk/leontp"
+	"github.com/katbyte/leontp-exporter/sdk/leontp"
 )
 
 // What a LeoNTP 1200 on firmware 2.07 sent back when asked, byte for byte: the captures in api-defs.

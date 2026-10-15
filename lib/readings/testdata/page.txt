@@ -1,4 +1,4 @@
-# HELP leontp_clock_offset_seconds The time server's clock less the clock of the machine running leontp-metrics, with the network delay taken out.
+# HELP leontp_clock_offset_seconds The time server's clock less the clock of the machine running leontp-exporter, with the network delay taken out.
 # TYPE leontp_clock_offset_seconds gauge
 leontp_clock_offset_seconds 0.087320658
 # HELP leontp_control_requests_total ntpq questions the time server has answered since it was powered on; a 1200 answers none.
