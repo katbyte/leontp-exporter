@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/go-kt/pmetrics"
+	"github.com/katbyte/go-kt/prometheus/metrics"
 	"github.com/katbyte/leontp-exporter/lib/readings"
 	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/spf13/cobra"
@@ -147,7 +147,7 @@ func TestPrintWritesThePage(t *testing.T) {
 		`leontp_gps_satellites{hostname="ntp",job="leontp"} 7`,
 		`leontp_stratum{hostname="ntp",job="leontp"} 1`,
 		`leontp_device_info{firmware="2.07",hostname="ntp",job="leontp",serial="416"} 1`,
-		`leontp_metrics_build_info{`,
+		`leontp_exporter_build_info{`,
 	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("the page lacks %s:\n%s", want, out)
@@ -253,15 +253,15 @@ func TestServe(t *testing.T) {
 	stopped := make(chan error, 1)
 	go func() { stopped <- root.ExecuteContext(ctx) }()
 
-	if got := strings.TrimSpace(fetch(t, addr, pmetrics.HealthPath)); got != "ok" {
-		t.Errorf("%s = %q, want ok", pmetrics.HealthPath, got)
+	if got := strings.TrimSpace(fetch(t, addr, metrics.HealthPath)); got != "ok" {
+		t.Errorf("%s = %q, want ok", metrics.HealthPath, got)
 	}
 
 	if got := fetch(t, addr, "/"); !strings.HasPrefix(got, "leontp-exporter ") {
 		t.Errorf("the root = %q, want the program's name and version", got)
 	}
 
-	body := fetch(t, addr, pmetrics.Path)
+	body := fetch(t, addr, metrics.Path)
 	for _, want := range []string{`leontp_up{hostname="ntp"} 1`, `leontp_gps_satellites{hostname="ntp"} 7`, `leontp_stratum{hostname="ntp"} 1`} {
 		if !strings.Contains(body, want) {
 			t.Errorf("the page lacks %s:\n%s", want, body)
@@ -270,7 +270,7 @@ func TestServe(t *testing.T) {
 
 	// the server is asked at each read of the page, so the next one says it has stopped answering
 	b.down.Store(true)
-	if body := fetch(t, addr, pmetrics.Path); !strings.Contains(body, `leontp_up{hostname="ntp"} 0`) || strings.Contains(body, "leontp_stratum") {
+	if body := fetch(t, addr, metrics.Path); !strings.Contains(body, `leontp_up{hostname="ntp"} 0`) || strings.Contains(body, "leontp_stratum") {
 		t.Errorf("the page should say the server is down and hold none of its readings:\n%s", body)
 	}
 

@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/go-kt/pmetrics"
 	"github.com/katbyte/go-kt/pointer"
+	"github.com/katbyte/go-kt/prometheus/metrics"
 	"github.com/katbyte/leontp-exporter/lib/readings"
 	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/prometheus/client_golang/prometheus/testutil/promlint"
@@ -53,9 +53,9 @@ func (statsOnly) Clock(context.Context) (leontp.Clock, error) {
 func whole(t *testing.T, r *readings.Readings, labels map[string]string) string {
 	t.Helper()
 
-	p, err := pmetrics.New(pmetrics.Options{Name: "leontp-exporter", Namespace: readings.Namespace, Labels: labels}, r)
+	p, err := metrics.New(metrics.Options{Name: "leontp-exporter", Labels: labels}, r)
 	if err != nil {
-		t.Fatalf("pmetrics.New: %v", err)
+		t.Fatalf("metrics.New: %v", err)
 	}
 
 	var b strings.Builder
@@ -72,7 +72,7 @@ func written(t *testing.T, r *readings.Readings) string {
 
 	var lines []string
 	for line := range strings.Lines(whole(t, r, nil)) {
-		if !strings.HasPrefix(line, "leontp_metrics_build_info{") {
+		if !strings.HasPrefix(line, "leontp_exporter_build_info{") {
 			lines = append(lines, line)
 		}
 	}

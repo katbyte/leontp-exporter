@@ -4,7 +4,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/katbyte/go-kt/pmetrics"
+	"github.com/katbyte/go-kt/prometheus/metrics"
 	"github.com/spf13/cobra"
 )
 
@@ -42,7 +42,7 @@ LEONTP_EXPORTER_LABELS, LEONTP_EXPORTER_TIMEOUT and LEONTP_EXPORTER_SHORT_QUESTI
 			ctx, stop := signal.NotifyContext(cmd.Context(), syscall.SIGINT, syscall.SIGTERM)
 			defer stop()
 
-			return pmetrics.Serve(ctx, f.Listen, p.Handler())
+			return metrics.Serve(ctx, f.Listen, p.Handler())
 		},
 	}
 }

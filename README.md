@@ -46,7 +46,7 @@ Every reading starts `leontp_`.
 | `leontp_reference_timestamp_seconds` | | when it says its clock was last set |
 | `leontp_clock_offset_seconds` | | its clock less the clock of the machine running leontp-exporter, with the network delay taken out |
 | `leontp_round_trip_seconds` | | how long an NTP question and its answer spent on the network |
-| `leontp_metrics_build_info` | `version`, `commit`, `goversion` | always 1; the version of leontp-exporter that wrote the page |
+| `leontp_exporter_build_info` | `version`, `commit`, `goversion` | always 1; the version of leontp-exporter that wrote the page |
 
 The page holds nothing but these: none of the Go runtime's or the process's own readings.
 

@@ -6,7 +6,7 @@ The same program under the name nearly every Prometheus exporter goes by: leontp
 
 - **The program, image and formula are renamed**: `leontp-exporter`, `ghcr.io/katbyte/leontp-exporter` and `brew install katbyte/tap/leontp-exporter`. The old image and formula stay as they were, at 0.1.1.
 - **Every setting is renamed with it**: `LEONTP_METRICS_SERVER` is now `LEONTP_EXPORTER_SERVER`, and the same for the rest. The settings file is now `.leontp-exporter`. The old names are no longer read.
-- **The readings keep their names.** The one saying which version wrote the page is still `leontp_metrics_build_info`, since go-kt, which writes it, names it that way.
+- **The readings keep their names, but for the one saying which version wrote the page**: `leontp_metrics_build_info` is now `leontp_exporter_build_info`, named for the program as Prometheus's own tools name theirs. It comes from go-kt 0.9.0, which this is now built on.
 
 ## 0.1.1 (2026-10-12)
 

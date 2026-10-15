@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/katbyte/go-kt/clog"
-	"github.com/katbyte/go-kt/pmetrics"
+	"github.com/katbyte/go-kt/prometheus/metrics"
 	"github.com/katbyte/leontp-exporter/lib/readings"
 	"github.com/katbyte/leontp-exporter/sdk/leontp"
 	"github.com/spf13/cobra"
@@ -163,13 +163,13 @@ func (f *FlagData) readings(connect connector) (*readings.Readings, error) {
 
 // page is the metrics page of these readings, with the labels the settings ask for on every one. A label that cannot be put on is a mistake said
 // now, with the setting it came from.
-func (f *FlagData) page(r *readings.Readings) (*pmetrics.Page, error) {
-	labels, err := pmetrics.ParseLabels(f.Labels)
+func (f *FlagData) page(r *readings.Readings) (*metrics.Page, error) {
+	labels, err := metrics.ParseLabels(f.Labels)
 	if err != nil {
 		return nil, fmt.Errorf("--labels (%s): %w", envNames["labels"], err)
 	}
 
-	p, err := pmetrics.New(pmetrics.Options{Name: toolName, Namespace: readings.Namespace, Labels: labels}, r)
+	p, err := metrics.New(metrics.Options{Name: toolName, Labels: labels}, r)
 	if err != nil {
 		return nil, fmt.Errorf("--labels (%s): %w", envNames["labels"], err)
 	}
